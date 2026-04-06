@@ -30,6 +30,17 @@ transform = transforms.Compose([
     transforms.ToTensor(),                         # 像素 [0,255] → [0,1]
     transforms.Normalize((0.1307,), (0.3081,))    # 标准化（MNIST 的均值和标准差）
 ])
+这两个数怎么得到的？
+是有人提前跑代码算出来的
+# 只用 ToTensor，不 Normalize
+dataset = datasets.MNIST(root='./data', train=True, download=True,
+                         transform=transforms.ToTensor())
+loader = DataLoader(dataset, batch_size=60000)
+
+images, _ = next(iter(loader))       # 一次性取全部图片
+mean = images.mean()                 # → 约 0.1307
+std  = images.std()                  # → 约 0.3081
+print(mean, std)
 ```
 
 | 步骤 | 作用 |
